@@ -4,7 +4,8 @@ export const exercise: Exercise = {
   id: "l1-gen-1",
   lesson: 1,
   difficulty: "lätt",
-  instructions: "Skapaa en variabel med värdet 50. Lägg till 15 och skriv ut resultatet.",
+  instructions:
+    "Skapa en variabel med värdet 50. Lägg till 15 och skriv ut resultatet.",
   starterCode: "int tal = 50;\ntal = tal + ;\nConsole.WriteLine(tal);",
   expectedOutput: "65",
   tag: "Matematik",

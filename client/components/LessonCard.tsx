@@ -69,23 +69,23 @@ export function LessonCard({ exercise }: LessonCardProps) {
     <>
       <Link
         href={`/exercise/${exercise.id}`}
-        className={`group min-h-30 p-4 relative flex flex-col gap-2 rounded-xl border backdrop-blur-md transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-lg overflow-hidden
+        className={`group min-h-30 p-4 relative flex flex-col gap-2 rounded-xl border backdrop-blur-md transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-lg overflow-visible
         ${
           completed
             ? "bg-green-500/5 border-green-500 hover:border-green-500 shadow-green-500/5 hover:shadow-green-500/10"
             : isGenerated
-            ? "bg-slate-800/70 border-l-4 border-l-blue-500 border-t-white/5 border-r-white/5 border-b-white/5 hover:bg-slate-800/90 hover:shadow-blue-500/10"
-            : "bg-slate-800/70 border-white/5 hover:border-slate-600 hover:bg-slate-800/90 hover:shadow-blue-500/10"
+              ? "bg-slate-800/70 border-l-4 border-l-blue-500 border-t-white/5 border-r-white/5 border-b-white/5 hover:bg-slate-800/90 hover:shadow-blue-500/10"
+              : "bg-slate-800/70 border-white/5 hover:border-slate-600 hover:bg-slate-800/90 hover:shadow-blue-500/10"
         }`}
       >
         {/* Decorative Top Line Gradient for non-generated/non-completed cards to match global style feel if needed, or keeping it clean */}
-        
-        {/* Completed checkmark badge */}
         {completed && (
-          <div className="absolute -top-2 -right-2 w-7 h-7 bg-green-500 rounded-full flex items-center justify-center shadow-md z-10">
-            <Check size={16} color="white" strokeWidth={3} />
-          </div>
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-2 text-xs uppercase font-extrabold tracking-wider text-green-50 bg-gradient-to-r from-green-600 to-green-500 px-3 py-0.5 rounded-full shadow-lg ring-1 ring-green-700/40 transform transition-all duration-200 group-hover:-translate-y-0.5">
+            <Check size={14} className="text-green-100" />
+            KLAR
+          </span>
         )}
+        {/* Completed checkmark badge */}
 
         {/* Header Row: Properties */}
         <div className="flex justify-between items-start w-full">
