@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AuthProvider } from "../context/AuthContext";
 import { ExerciseProvider } from "../context/ExerciseContext";
 import "./globals.css";
 
@@ -15,9 +16,9 @@ export default function RootLayout({
   return (
     <html lang="sv">
       <body>
-        <ExerciseProvider>
-          {children}
-        </ExerciseProvider>
+        <AuthProvider>
+          <ExerciseProvider>{children}</ExerciseProvider>
+        </AuthProvider>
       </body>
     </html>
   );

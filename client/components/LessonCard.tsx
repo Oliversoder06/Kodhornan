@@ -5,20 +5,22 @@ import { useState } from "react";
 import { Exercise } from "shared/exercise.schema";
 import { useExerciseContext } from "../context/ExerciseContext";
 import { ConfirmModal } from "./ConfirmModal";
-import { RefreshCcw, Trash } from "lucide-react";
+import { RefreshCcw, Trash, Check } from "lucide-react";
 
 interface LessonCardProps {
   exercise: Exercise;
 }
 
 export function LessonCard({ exercise }: LessonCardProps) {
-  const { deleteExercise, generateExercise } = useExerciseContext();
+  const { deleteExercise, generateExercise, isCompleted } =
+    useExerciseContext();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const isGenerated =
     exercise.id.includes("-gen-") || exercise.id.startsWith("gen-");
+  const completed = isCompleted(exercise.id);
 
   const handleDelete = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigation
@@ -67,8 +69,28 @@ export function LessonCard({ exercise }: LessonCardProps) {
     <>
       <Link
         href={`/exercise/${exercise.id}`}
-        className={`exercise-card group min-h-30 p-4 relative flex flex-col gap-2 ${isGenerated ? "border-l-4 border-l-blue-500" : ""}`}
+        className={`exercise-card group min-h-30 p-4 relative flex flex-col gap-2 ${isGenerated ? "border-l-4 border-l-blue-500" : ""} ${completed ? "border-2 border-green-500 bg-green-500/5" : ""}`}
       >
+        {/* Completed checkmark badge */}
+        {completed && (
+          <div
+            style={{
+              position: "absolute",
+              top: -8,
+              right: -8,
+              width: 28,
+              height: 28,
+              backgroundColor: "#22c55e",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+            }}
+          >
+            <Check size={16} color="white" strokeWidth={3} />
+          </div>
+        )}
         {/* Header Row: Properties */}
         <div className="flex justify-between items-start w-full">
           <div className="flex gap-4 items-center flex-wrap ">

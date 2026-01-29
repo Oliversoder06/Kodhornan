@@ -1,5 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// 🔴 IMPORTANT: listen on Fly's internal port
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
+
 // Add services
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
