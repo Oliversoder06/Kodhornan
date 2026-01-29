@@ -4,7 +4,7 @@ using Compiler.Services;
 namespace Compiler.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("run")]
 public class RunController : ControllerBase
 {
     private readonly CodeRunner _codeRunner;
