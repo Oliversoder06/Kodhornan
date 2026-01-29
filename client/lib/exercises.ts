@@ -2,35 +2,28 @@ import { Exercise } from "shared/exercise.schema";
 import { core, generated } from "shared/exercises";
 
 // --- Core exercises (mandatory curriculum)
-const l1e1 = core.lesson1_easy_1;
-const l1e2 = core.lesson1_easy_2;
-const l1m1 = core.lesson1_medium_1;
+export const coreExercises: Exercise[] = Object.values(core);
 
-// --- Generated exercises (optional practice)
-const l1g1 = generated.lesson1_gen_1;
-const l2g1 = generated.lesson2_gen_1;
+// --- Generated Templates (read-only source)
+// These are NOT active exercises. They are templates used to spawn new ones.
+export const generatedTemplates: Exercise[] = Object.values(generated);
 
-export const coreExercises: Exercise[] = [
-  l1e1,
-  l1e2,
-  l1m1,
-];
-
-export const generatedExercises: Exercise[] = [
-  l1g1,
-  l2g1,
-];
-
+// Export only core exercises by default for server-side looking/static paths
 export const allExercises: Exercise[] = [
   ...coreExercises,
-  ...generatedExercises,
 ];
 
+// Helper to find core exercises (server-side mainly)
+export function getCoreExerciseById(id: string): Exercise | undefined {
+  return coreExercises.find((ex) => ex.id === id);
+}
+
+// @deprecated Use Context for full list including generated
 export function getExerciseById(id: string): Exercise | undefined {
   return allExercises.find((ex) => ex.id === id);
 }
 
-export function groupExercisesByDay() {
+export function groupCoreExercisesByDay() {
   const days: { day: number; exercises: Exercise[] }[] = [];
 
   coreExercises.forEach((ex) => {

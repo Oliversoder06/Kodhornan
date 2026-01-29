@@ -5,15 +5,19 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { getExerciseById } from "../../../lib/exercises";
 import { runCode } from "../../../lib/api";
+import { useExerciseContext } from "../../../context/ExerciseContext";
 
 export default function ExercisePage() {
   const params = useParams();
-  const exercise = getExerciseById(params.id as string);
+  const { getExercise } = useExerciseContext();
+  // Try to find in context (includes generated)
+  const exercise = getExercise(params.id as string);
 
-  const [code, setCode] = useState(exercise?.starterCode || "");
+  const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [showHint, setShowHint] = useState(false);
+  const [showStarterCode, setShowStarterCode] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
 
   if (!exercise) {
@@ -37,6 +41,12 @@ export default function ExercisePage() {
     setIsRunning(false);
   };
 
+  const handleUseStarterCode = () => {
+    if (exercise.starterCode) {
+      setCode(exercise.starterCode);
+    }
+  };
+
   return (
     <div className="exercise-layout">
       <aside className="sidebar">
@@ -56,6 +66,22 @@ export default function ExercisePage() {
           </div>
         )}
 
+        {exercise.starterCode && (
+           <div className="starter-code-section">
+             <button onClick={() => setShowStarterCode(!showStarterCode)} className="hint-button">
+               {showStarterCode ? "Dölj startkod" : "Visa startkod"}
+             </button>
+             {showStarterCode && (
+               <div className="starter-code-container">
+                 <pre className="hint-text">{exercise.starterCode}</pre>
+                 <button onClick={handleUseStarterCode} className="use-starter-code-button">
+                   Använd startkod
+                 </button>
+               </div>
+             )}
+           </div>
+        )}
+
         <div className="expected-section">
           <h3>Förväntat resultat</h3>
           <pre className="expected-output">{exercise.expectedOutput}</pre>
@@ -69,6 +95,7 @@ export default function ExercisePage() {
             onChange={(e) => setCode(e.target.value)}
             className="code-editor"
             spellCheck={false}
+            placeholder="// Skriv din kod här..."
           />
           <button onClick={handleRun} disabled={isRunning} className="run-button">
             {isRunning ? "Kör..." : "Kör ▶"}

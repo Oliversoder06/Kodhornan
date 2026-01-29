@@ -5,36 +5,39 @@
   --bg-primary: #0f172a; /* Slate 900 */
   --bg-secondary: #020617; /* Slate 950 */
   --bg-tertiary: #1e293b; /* Slate 800 */
-  
+
   --text-primary: #f1f5f9; /* Slate 100 */
   --text-secondary: #94a3b8; /* Slate 400 */
   --text-dim: #64748b; /* Slate 500 */
-  
+
   --accent-primary: #3b82f6; /* Blue 500 */
   --accent-secondary: #8b5cf6; /* Violet 500 */
   --accent-glow: rgba(59, 130, 246, 0.15);
-  
+
   --border-color: #334155; /* Slate 700 */
   --border-active: #475569; /* Slate 600 */
 
   --success: #10b981; /* Emerald 500 */
   --error: #ef4444; /* Red 500 */
   --warning: #eab308; /* Yellow 500 */
-  
+
   --card-bg: rgba(30, 41, 59, 0.7); /* Translucent Slate 800 */
   --glass-border: rgba(255, 255, 255, 0.05);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   background-color: var(--bg-primary);
-  background-image: 
+  background-image:
     radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.1), transparent 40%),
     radial-gradient(circle at 80% 10%, rgba(139, 92, 246, 0.1), transparent 40%);
   color: var(--text-primary);
@@ -49,37 +52,33 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary); 
+  background: var(--bg-secondary);
 }
- 
+
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary); 
+  background: var(--bg-tertiary);
   border-radius: 5px;
   border: 2px solid var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-active); 
+  background: var(--border-active);
 }
 
 /* Layout & Typography */
 .container {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
   width: 100%;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 5rem;
-  padding-top: 4rem;
+
   position: relative;
 }
 
 .header h1 {
   font-size: 4rem;
-  margin-bottom: 1rem;
   font-weight: 800;
   background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
   -webkit-background-clip: text;
@@ -92,7 +91,6 @@ body {
   color: var(--text-secondary);
   font-size: 1.25rem;
   max-width: 600px;
-  margin: 0 auto;
   font-weight: 400;
 }
 
@@ -105,18 +103,22 @@ body {
 
 .day-section {
   background: transparent;
-  padding: 0;
   border: none;
   animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .day-section h2 {
-  margin-bottom: 1.5rem;
   color: var(--text-primary);
   font-size: 1.5rem;
   font-weight: 600;
@@ -141,8 +143,7 @@ body {
 .exercise-card {
   background: var(--card-bg);
   backdrop-filter: blur(12px);
-  padding: 1.5rem;
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid var(--glass-border);
   text-decoration: none;
   color: inherit;
@@ -151,7 +152,9 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .exercise-card::before {
@@ -161,7 +164,12 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--glass-border),
+    transparent
+  );
   opacity: 0.5;
 }
 
@@ -177,11 +185,9 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   color: var(--text-dim);
-  margin-bottom: 0.75rem;
   letter-spacing: 0.1em;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   width: fit-content;
-  padding: 0.2rem 0.5rem;
   border-radius: 4px;
 }
 
@@ -204,7 +210,6 @@ body {
 .sidebar {
   background: var(--bg-primary);
   border-right: 1px solid var(--border-color);
-  padding: 2rem;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -213,7 +218,6 @@ body {
 .back-link {
   display: inline-flex;
   align-items: center;
-  margin-bottom: 2rem;
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
@@ -230,7 +234,6 @@ body {
 
 .instructions-section h2 {
   font-size: 1.25rem;
-  margin-bottom: 1rem;
   color: var(--text-primary);
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -245,7 +248,6 @@ body {
 .hint-button {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  padding: 0.75rem 1rem;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -256,7 +258,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
 }
 
 .hint-button:hover {
@@ -265,8 +266,6 @@ body {
 }
 
 .hint-text {
-  margin-top: 1rem;
-  padding: 1rem;
   background: rgba(234, 179, 8, 0.1);
   border: 1px solid rgba(234, 179, 8, 0.2);
   border-radius: 8px;
@@ -275,22 +274,16 @@ body {
   line-height: 1.5;
 }
 
-.expected-section {
-  margin-top: 2rem;
-}
-
 .expected-section h3 {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 0.75rem;
   color: var(--text-dim);
   font-weight: 700;
 }
 
 .expected-output {
   background: #000;
-  padding: 1rem;
   border-radius: 8px;
   border: 1px solid var(--border-color);
   font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
@@ -319,7 +312,6 @@ body {
 .code-editor {
   flex: 1;
   width: 100%;
-  padding: 2rem;
   font-family: "JetBrains Mono", "SF Mono", "Fira Code", "Consolas", monospace;
   font-size: 1rem;
   border: none;
@@ -338,7 +330,6 @@ body {
   position: absolute;
   top: 1.5rem;
   right: 2rem;
-  padding: 0.6rem 1.4rem;
   background: var(--success);
   color: #000;
   border: none;
@@ -377,7 +368,6 @@ body {
 }
 
 .output-section h3 {
-  padding: 0.5rem 1rem;
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   font-size: 0.75rem;
@@ -385,7 +375,6 @@ body {
   letter-spacing: 0.1em;
   color: var(--text-dim);
   font-weight: 600;
-  margin: 0;
   display: flex;
   align-items: center;
 }
@@ -397,14 +386,12 @@ body {
   height: 8px;
   background: var(--text-dim);
   border-radius: 50%;
-  margin-right: 0.5rem;
   opacity: 0.5;
 }
 
 /* Terminal Content */
-.output-section pre, .output-section .no-output {
-  margin: 0;
-  padding: 1.5rem;
+.output-section pre,
+.output-section .no-output {
   font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
   font-size: 0.9rem;
   overflow-y: auto;

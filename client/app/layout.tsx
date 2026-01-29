@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ExerciseProvider } from "../context/ExerciseContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sv">
-      <body>{children}</body>
+      <body>
+        <ExerciseProvider>
+          {children}
+        </ExerciseProvider>
+      </body>
     </html>
   );
 }

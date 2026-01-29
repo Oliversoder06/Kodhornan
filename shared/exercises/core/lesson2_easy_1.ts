@@ -1,9 +1,9 @@
 import { Exercise } from "../../exercise.schema";
 
 export const exercise: Exercise = {
-  id: "l1-medium-1",
-  lesson: 1,
-  difficulty: "medel",
+  id: "l2-easy-1",
+  lesson: 2,
+  difficulty: "lätt",
   instructions: "Skapa två variabler: ett tal och en text. Skriv ut båda på separata rader.",
   starterCode: 'int ålder = ;\nstring stad = "";\nConsole.WriteLine(ålder);\nConsole.WriteLine(stad);',
   expectedOutput: "25\nStockholm",
