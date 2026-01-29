@@ -1,4 +1,4 @@
-import { Exercise } from "../exercise.schema";
+import { Exercise } from "../../exercise.schema";
 
 export const exercise: Exercise = {
   id: "l1-easy-1",

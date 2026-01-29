@@ -1,26 +1,267 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.days-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.day-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.day-section h2 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.exercise-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.exercise-card {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.exercise-card:hover {
+  border-color: #3498db;
+  background: #fff;
+}
+
+.exercise-difficulty {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #7f8c8d;
+  margin-bottom: 0.5rem;
+}
+
+.exercise-title {
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.exercise-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  background: white;
+  border-right: 1px solid #ddd;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.instructions-section,
+.hint-section,
+.expected-section {
+  margin-bottom: 1.5rem;
+}
+
+.instructions-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+}
+
+.instructions-section p {
+  color: #555;
+  line-height: 1.5;
+}
+
+.hint-button {
+  background: #ecf0f1;
+  border: 1px solid #bdc3c7;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: left;
+}
+
+.hint-button:hover {
+  background: #d5dbdb;
+}
+
+.hint-text {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #fff9e6;
+  border-left: 3px solid #f39c12;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.expected-section h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.expected-output {
+  background: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  color: #2c3e50;
+}
+
+.main-area {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editor-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: #f8f9fa;
+}
+
+.code-editor {
+  flex: 1;
+  width: 100%;
+  padding: 1rem;
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  resize: none;
+  background: white;
+  color: #2c3e50;
+  line-height: 1.5;
+}
+
+.code-editor:focus {
+  outline: 2px solid #3498db;
+}
+
+.run-button {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.run-button:hover:not(:disabled) {
+  background: #229954;
+}
+
+.run-button:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.output-section {
+  border-top: 1px solid #ddd;
+  padding: 1rem;
+  background: white;
+  min-height: 150px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.output-section h3 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+}
+
+.program-output {
+  background: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  color: #27ae60;
+}
+
+.error-output {
+  background: #fff5f5;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #ffcdd2;
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  color: #c0392b;
+}
+
+.no-output {
+  color: #95a5a6;
+  font-style: italic;
 }
