@@ -69,57 +69,53 @@ export function LessonCard({ exercise }: LessonCardProps) {
     <>
       <Link
         href={`/exercise/${exercise.id}`}
-        className={`exercise-card group min-h-30 p-4 relative flex flex-col gap-2 ${isGenerated ? "border-l-4 border-l-blue-500" : ""} ${completed ? "border-2 border-green-500 bg-green-500/5" : ""}`}
+        className={`group min-h-30 p-4 relative flex flex-col gap-2 rounded-xl border backdrop-blur-md transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-lg overflow-hidden
+        ${
+          completed
+            ? "bg-green-500/5 border-green-500 hover:border-green-500 shadow-green-500/5 hover:shadow-green-500/10"
+            : isGenerated
+            ? "bg-slate-800/70 border-l-4 border-l-blue-500 border-t-white/5 border-r-white/5 border-b-white/5 hover:bg-slate-800/90 hover:shadow-blue-500/10"
+            : "bg-slate-800/70 border-white/5 hover:border-slate-600 hover:bg-slate-800/90 hover:shadow-blue-500/10"
+        }`}
       >
+        {/* Decorative Top Line Gradient for non-generated/non-completed cards to match global style feel if needed, or keeping it clean */}
+        
         {/* Completed checkmark badge */}
         {completed && (
-          <div
-            style={{
-              position: "absolute",
-              top: -8,
-              right: -8,
-              width: 28,
-              height: 28,
-              backgroundColor: "#22c55e",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-            }}
-          >
+          <div className="absolute -top-2 -right-2 w-7 h-7 bg-green-500 rounded-full flex items-center justify-center shadow-md z-10">
             <Check size={16} color="white" strokeWidth={3} />
           </div>
         )}
+
         {/* Header Row: Properties */}
         <div className="flex justify-between items-start w-full">
-          <div className="flex gap-4 items-center flex-wrap ">
-            <div className="exercise-difficulty capitalize px-2 py-0.5">
+          <div className="flex gap-2 items-center flex-wrap">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-500 bg-black/20 px-2 py-0.5 rounded cursor-default">
               {exercise.difficulty}
             </div>
             {exercise.tag && (
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700/50">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-700/50 px-2 py-0.5 rounded border border-slate-700/50">
                 {exercise.tag}
               </span>
             )}
           </div>
 
-          {/* Generated Badge - Always visible unless hovered (actions take precedence) */}
+          {/* Generated Badge */}
           {isGenerated && (
-            <span className="text-[10px] uppercase font-bold tracking-wider text-blue-500 bg-blue-500/10 px-2 py-0.5 rounded-full transition-opacity group-hover:opacity-0">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded transition-opacity group-hover:opacity-0 delay-100">
               Genererad
             </span>
           )}
         </div>
 
         {/* Main Content */}
-        <div className="exercise-title text-sm text-slate-300 mt-1 line-clamp-3">
+        <div className="text-sm font-medium text-slate-200 mt-1 line-clamp-3 leading-relaxed">
           {exercise.instructions}
         </div>
 
         {/* Hover Action Overlay (Top Right) */}
         {isGenerated && (
-          <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+          <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 duration-200 z-20">
             <button
               onClick={handleRegenerate}
               disabled={isRegenerating || isDeleting}
