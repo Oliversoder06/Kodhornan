@@ -6,11 +6,19 @@ import Link from "next/link";
 import { runCode } from "../../../lib/api";
 import { useExerciseContext } from "../../../context/ExerciseContext";
 import { ErrorDisplay } from "../../../components/ErrorDisplay";
-import { TeacherMode } from "../../../components/TeacherMode";
 import { Check, ChevronRight, RotateCcw, Lightbulb, RefreshCcw } from "lucide-react";
 import { supabase } from "../../../lib/supabase";
 import { saveCode, saveCodeAndOutput, getSavedCode, deleteSavedCode, SavedOutput } from "../../../lib/savedCode";
-import { trackAttempt, trackHintUsed, trackTimeSpent } from "../../../lib/teacherAnalytics";
+import {
+  ArrowLeft,
+  Sparkles,
+  Play,
+  CheckCircle2,
+  AlertCircle,
+  Code2,
+  Puzzle,
+} from "lucide-react";
+import { trackAttempt, trackHintUsed, trackTimeSpent } from "../../../lib/analytics";
 import { translateError } from "../../../lib/errorTranslations";
 
 export default function ExercisePage() {
@@ -35,6 +43,7 @@ export default function ExercisePage() {
   const [isRunning, setIsRunning] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   
   // Progressive hints state
   const [visibleHints, setVisibleHints] = useState(0);
@@ -481,8 +490,33 @@ export default function ExercisePage() {
         </div>
       </main>
 
-      {/* Teacher Mode Panel */}
-      {isTeacherMode && <TeacherMode exerciseId={exerciseId} />}
+      {/* Reset Confirmation Modal */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-900 border border-red-500/30 rounded-xl p-6 max-w-sm w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-white mb-2">
+              Återställ kod?
+            </h3>
+            <p className="text-slate-400 mb-6">
+              Detta tar bort all din kod och historik för denna övning. Du kan inte ångra detta.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowResetConfirm(false)}
+                className="flex-1 py-3 px-4 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 transition-colors"
+              >
+                Avbryt
+              </button>
+              <button
+                onClick={handleReset}
+                className="flex-1 py-3 px-4 rounded-lg bg-red-500 text-white font-bold hover:bg-red-400 transition-all shadow-lg shadow-red-500/20"
+              >
+                Återställ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

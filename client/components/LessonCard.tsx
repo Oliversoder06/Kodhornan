@@ -12,7 +12,7 @@ interface LessonCardProps {
 }
 
 export function LessonCard({ exercise }: LessonCardProps) {
-  const { deleteExercise, generateExercise, isCompleted } =
+  const { deleteExercise, generateExercise, isCompleted, readOnly, basePath } =
     useExerciseContext();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
@@ -68,7 +68,7 @@ export function LessonCard({ exercise }: LessonCardProps) {
   return (
     <>
       <Link
-        href={`/exercise/${exercise.id}`}
+        href={`${basePath}/${exercise.id}`}
         className={`group min-h-30 p-4 relative flex flex-col gap-2 rounded-xl border backdrop-blur-md transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-lg overflow-visible
         ${
           completed
@@ -114,7 +114,7 @@ export function LessonCard({ exercise }: LessonCardProps) {
         </div>
 
         {/* Hover Action Overlay (Top Right) */}
-        {isGenerated && (
+        {isGenerated && !readOnly && (
           <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 duration-200 z-20">
             <button
               onClick={handleRegenerate}

@@ -27,43 +27,64 @@ interface ExerciseContextType {
   getNextLesson: (currentLesson: number) => number | null;
   isLastExerciseInLesson: (exerciseId: string) => boolean;
   getLessonExercises: (lesson: number) => Exercise[];
+  // View mode
+  readOnly: boolean;
+  basePath: string;
 }
 
 const ExerciseContext = createContext<ExerciseContextType | undefined>(
   undefined,
 );
 
-export function ExerciseProvider({ children }: { children: ReactNode }) {
+interface ExerciseProviderProps {
+  children: ReactNode;
+  forcedUserId?: string;
+  readOnly?: boolean;
+  basePath?: string;
+}
+
+export function ExerciseProvider({ 
+  children, 
+  forcedUserId, 
+  readOnly = false, 
+  basePath = "/exercise" 
+}: ExerciseProviderProps) {
   const [generatedExercises, setGeneratedExercises] = useState<Exercise[]>([]);
   const [completedExercises, setCompletedExercises] = useState<string[]>([]);
 
-  // Fetch completed exercises on mount
+  // Fetch completed exercises based on user context
   useEffect(() => {
     async function fetchProgress() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session?.user) {
-        const completed = await getCompletedExercises(session.user.id);
+      if (forcedUserId) {
+        // Admin View: Fetch specific user
+        const completed = await getCompletedExercises(forcedUserId);
         setCompletedExercises(completed);
+      } else {
+        // Normal View: Fetch logged in user
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          const completed = await getCompletedExercises(session.user.id);
+          setCompletedExercises(completed);
+        }
       }
     }
     fetchProgress();
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user) {
-        const completed = await getCompletedExercises(session.user.id);
-        setCompletedExercises(completed);
-      } else {
-        setCompletedExercises([]);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+    // Listen for auth changes only if not forced user
+    if (!forcedUserId) {
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange(async (_event, session) => {
+        if (session?.user) {
+          const completed = await getCompletedExercises(session.user.id);
+          setCompletedExercises(completed);
+        } else {
+          setCompletedExercises([]);
+        }
+      });
+      return () => subscription.unsubscribe();
+    }
+  }, [forcedUserId]);
 
   const allExercises = [...coreExercises, ...generatedExercises];
 
@@ -177,6 +198,8 @@ export function ExerciseProvider({ children }: { children: ReactNode }) {
         getNextLesson,
         isLastExerciseInLesson,
         getLessonExercises,
+        readOnly,
+        basePath,
       }}
     >
       {children}

@@ -24,7 +24,7 @@ function groupExercisesByDay(exercises: Exercise[]) {
 }
 
 export function ExerciseBoard() {
-  const { allExercises } = useExerciseContext();
+  const { allExercises, readOnly } = useExerciseContext();
   const days = groupExercisesByDay(allExercises);
 
   return (
@@ -36,7 +36,7 @@ export function ExerciseBoard() {
             {day.exercises.map((exercise) => (
               <LessonCard key={exercise.id} exercise={exercise} />
             ))}
-            <GenerateLessonButton day={day.day} />
+            {!readOnly && <GenerateLessonButton day={day.day} />}
           </div>
         </div>
       ))}

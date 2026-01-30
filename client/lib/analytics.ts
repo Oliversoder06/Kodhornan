@@ -1,8 +1,8 @@
 import { supabase } from "./supabase";
 
 /**
- * Teacher Analytics - Track student progress data
- * Hidden behind ?teacher=1 query param
+ * Analytics - Track student progress data
+ * Used for admin dashboard and user progress tracking
  */
 
 interface ExerciseAnalytics {

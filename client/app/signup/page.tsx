@@ -6,6 +6,7 @@ import { signUp } from "@/lib/auth";
 
 export default function SignupPage() {
   const router = useRouter();
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,7 +17,7 @@ export default function SignupPage() {
     setError("");
     setLoading(true);
 
-    const { error } = await signUp(email, password);
+    const { error } = await signUp(email, password, displayName);
 
     if (error) {
       setError(error.message);
@@ -31,6 +32,22 @@ export default function SignupPage() {
     <div style={{ maxWidth: 400, margin: "100px auto", padding: 20 }}>
       <h1 style={{ marginBottom: 24 }}>Registrera dig</h1>
       <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: "block", marginBottom: 4 }}>Namn</label>
+          <input
+            type="text"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            required
+            placeholder="Ditt namn"
+            style={{
+              width: "100%",
+              padding: 8,
+              border: "1px solid #ccc",
+              borderRadius: 4,
+            }}
+          />
+        </div>
         <div style={{ marginBottom: 16 }}>
           <label style={{ display: "block", marginBottom: 4 }}>E-post</label>
           <input
