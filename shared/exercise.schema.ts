@@ -2,6 +2,7 @@ export type Concept = "Variabler" | "Output" | "Villkor" | "Jämförelser" | "Lo
 
 export type Exercise = {
   id: string;
+  title?: string;
   lesson: number;
   difficulty: "lätt" | "medel" | "svår";
   instructions: string;

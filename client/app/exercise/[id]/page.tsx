@@ -6,9 +6,21 @@ import Link from "next/link";
 import { runCode } from "../../../lib/api";
 import { useExerciseContext } from "../../../context/ExerciseContext";
 import { ErrorDisplay } from "../../../components/ErrorDisplay";
-import { Check, ChevronRight, RotateCcw, Lightbulb, RefreshCcw } from "lucide-react";
+import {
+  Check,
+  ChevronRight,
+  RotateCcw,
+  Lightbulb,
+  RefreshCcw,
+} from "lucide-react";
 import { supabase } from "../../../lib/supabase";
-import { saveCode, saveCodeAndOutput, getSavedCode, deleteSavedCode, SavedOutput } from "../../../lib/savedCode";
+import {
+  saveCode,
+  saveCodeAndOutput,
+  getSavedCode,
+  deleteSavedCode,
+  SavedOutput,
+} from "../../../lib/savedCode";
 import {
   ArrowLeft,
   Sparkles,
@@ -18,21 +30,25 @@ import {
   Code2,
   Puzzle,
 } from "lucide-react";
-import { trackAttempt, trackHintUsed, trackTimeSpent } from "../../../lib/analytics";
+import {
+  trackAttempt,
+  trackHintUsed,
+  trackTimeSpent,
+} from "../../../lib/analytics";
 import { translateError } from "../../../lib/errorTranslations";
 
 export default function ExercisePage() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { 
-    getExercise, 
-    markComplete, 
+  const {
+    getExercise,
+    markComplete,
     isCompleted,
     getNextExercise,
     isLastExerciseInLesson,
   } = useExerciseContext();
-  
+
   const exercise = getExercise(params.id as string);
   const exerciseId = params.id as string;
 
@@ -44,26 +60,25 @@ export default function ExercisePage() {
   const [isCorrect, setIsCorrect] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
-  
+
   // Progressive hints state
   const [visibleHints, setVisibleHints] = useState(0);
 
   // Autosave debounce ref
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   // Time tracking refs
   const startTimeRef = useRef<number>(Date.now());
   const lastSavedTimeRef = useRef<number>(0);
-
-  // Teacher mode via query param
-  const isTeacherMode = searchParams.get("teacher") === "1";
 
   const completed = exercise ? isCompleted(exerciseId) : false;
 
   // Get user ID on mount
   useEffect(() => {
     async function getUser() {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (session?.user) {
         setUserId(session.user.id);
       }
@@ -80,7 +95,7 @@ export default function ExercisePage() {
         setCode(saved.code);
         // Restore output state from JSON structure
         if (saved.output) {
-          if (saved.output.state === 'error' && saved.output.technical_error) {
+          if (saved.output.state === "error" && saved.output.technical_error) {
             // Restore error state
             setError(saved.output.technical_error);
             setOutput("");
@@ -88,7 +103,7 @@ export default function ExercisePage() {
             // Restore success/normal output
             setOutput(saved.output.output);
             setError("");
-            if (saved.output.state === 'success') {
+            if (saved.output.state === "success") {
               setIsCorrect(true);
             }
           }
@@ -116,8 +131,11 @@ export default function ExercisePage() {
   useEffect(() => {
     return () => {
       if (userId) {
-        const timeSpent = Math.floor((Date.now() - startTimeRef.current) / 1000) - lastSavedTimeRef.current;
-        if (timeSpent > 5) { // Only save if > 5 seconds
+        const timeSpent =
+          Math.floor((Date.now() - startTimeRef.current) / 1000) -
+          lastSavedTimeRef.current;
+        if (timeSpent > 5) {
+          // Only save if > 5 seconds
           trackTimeSpent(userId, exerciseId, timeSpent);
         }
       }
@@ -145,18 +163,21 @@ export default function ExercisePage() {
   }, [userId, exerciseId]);
 
   // Debounced autosave - ONLY saves code, not output
-  const debouncedSave = useCallback((newCode: string) => {
-    if (!userId) return;
-    
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
-    
-    saveTimeoutRef.current = setTimeout(() => {
-      // Only save code - output is saved on RUN
-      saveCode(userId, exerciseId, newCode);
-    }, 800); // Save after 800ms of no typing
-  }, [userId, exerciseId]);
+  const debouncedSave = useCallback(
+    (newCode: string) => {
+      if (!userId) return;
+
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+
+      saveTimeoutRef.current = setTimeout(() => {
+        // Only save code - output is saved on RUN
+        saveCode(userId, exerciseId, newCode);
+      }, 800); // Save after 800ms of no typing
+    },
+    [userId, exerciseId],
+  );
 
   // Handle code change with autosave
   const handleCodeChange = (newCode: string) => {
@@ -166,15 +187,28 @@ export default function ExercisePage() {
 
   if (!exercise) {
     return (
-      <div className="container">
-        <p>Övning hittades inte</p>
-        <Link href="/">Tillbaka till startsidan</Link>
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 p-6">
+        <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-lg p-8 text-center shadow-lg">
+          <p className="text-lg font-semibold text-slate-100 mb-4">
+            Övning hittades inte
+          </p>
+          <p className="text-slate-400 mb-6">
+            Kanske är länken fel eller övningen har tagits bort.
+          </p>
+          <Link
+            href="/"
+            className="inline-block px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md transition"
+          >
+            Tillbaka till startsidan
+          </Link>
+        </div>
       </div>
     );
   }
 
   // Get all hints (support both single hint and hints array)
-  const allHints: string[] = exercise.hints || (exercise.hint ? [exercise.hint] : []);
+  const allHints: string[] =
+    exercise.hints || (exercise.hint ? [exercise.hint] : []);
   const hasMoreHints = visibleHints < allHints.length;
 
   const handleRun = async () => {
@@ -190,25 +224,31 @@ export default function ExercisePage() {
     setIsRunning(false);
 
     // Determine state and build output JSON
-    const isSuccess = !result.error && result.output && exercise && 
-                      result.output.trim() === exercise.expectedOutput.trim();
-    
+    const isSuccess =
+      !result.error &&
+      result.output &&
+      exercise &&
+      result.output.trim() === exercise.expectedOutput.trim();
+
     // Translate error for friendly message
     const translated = result.error ? translateError(result.error) : null;
-    
+
     // Build the output JSON structure
     const outputData: SavedOutput = {
-      state: isSuccess ? 'success' : result.error ? 'error' : '',
+      state: isSuccess ? "success" : result.error ? "error" : "",
       output: result.output || "",
       technical_error: result.error || null,
-      clarified_error: translated?.friendly || null
+      clarified_error: translated?.friendly || null,
     };
 
     // Save code AND output together when user clicks RUN
     if (userId) {
-      console.log("Saving to DB:", { code: code.substring(0, 30), output: outputData });
-      saveCodeAndOutput(userId, exerciseId, code, outputData).catch(err =>
-        console.error("Failed to save output:", err)
+      console.log("Saving to DB:", {
+        code: code.substring(0, 30),
+        output: outputData,
+      });
+      saveCodeAndOutput(userId, exerciseId, code, outputData).catch((err) =>
+        console.error("Failed to save output:", err),
       );
     } else {
       console.warn("Not saving - userId is null.");
@@ -223,10 +263,12 @@ export default function ExercisePage() {
     if (isSuccess) {
       setIsCorrect(true);
       await markComplete(exerciseId);
-      
+
       // Track final time spent on success
       if (userId) {
-        const timeSpent = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        const timeSpent = Math.floor(
+          (Date.now() - startTimeRef.current) / 1000,
+        );
         trackTimeSpent(userId, exerciseId, timeSpent);
         lastSavedTimeRef.current = timeSpent;
       }
@@ -236,8 +278,8 @@ export default function ExercisePage() {
   const handleReset = async () => {
     // Save current code before resetting (non-blocking, in case user changes mind)
     if (userId && code) {
-      saveCode(userId, exerciseId, code).catch(err => 
-        console.error("Failed to save before reset:", err)
+      saveCode(userId, exerciseId, code).catch((err) =>
+        console.error("Failed to save before reset:", err),
       );
     }
 
@@ -245,7 +287,7 @@ export default function ExercisePage() {
     setOutput("");
     setError("");
     setIsCorrect(false);
-    
+
     // Clear saved code and output from database
     if (userId) {
       setTimeout(() => deleteSavedCode(userId, exerciseId), 100);
@@ -262,7 +304,7 @@ export default function ExercisePage() {
   const handleShowNextHint = () => {
     if (hasMoreHints) {
       setVisibleHints((prev) => prev + 1);
-      
+
       // Track hint usage
       if (userId) {
         trackHintUsed(userId, exerciseId);
@@ -297,8 +339,8 @@ export default function ExercisePage() {
             onClick={async () => {
               // Save before navigating away (AWAIT to prevent race condition)
               if (userId && code) {
-                await saveCode(userId, exerciseId, code).catch(err => 
-                  console.error("Failed to save before navigation:", err)
+                await saveCode(userId, exerciseId, code).catch((err) =>
+                  console.error("Failed to save before navigation:", err),
                 );
               }
               router.push("/");
@@ -309,9 +351,32 @@ export default function ExercisePage() {
           </button>
         </div>
 
+        <div className="mb-4">
+          <h1 className="text-2xl text-slate-100 font-bold tracking-tight">
+            {exercise.title || "Övning"}
+          </h1>
+          {exercise.difficulty && (
+            <span
+              className={`inline-block mt-2 text-xs px-2 py-1 rounded ${
+                exercise.difficulty === "lätt"
+                  ? "bg-emerald-600/10 text-emerald-300"
+                  : exercise.difficulty === "medel"
+                    ? "bg-yellow-500/10 text-yellow-300"
+                    : "bg-rose-500/10 text-rose-300"
+              }`}
+            >
+              {exercise.difficulty}
+            </span>
+          )}
+        </div>
+
         <div className="space-y-4">
-          <h2 className="text-xl text-slate-100 font-bold tracking-tight">Instruktioner</h2>
-          <p className="text-slate-400 leading-relaxed text-[0.95rem]">{exercise.instructions}</p>
+          <h2 className="text-xl text-slate-100 font-bold tracking-tight">
+            Instruktioner
+          </h2>
+          <p className="text-slate-400 leading-relaxed text-[0.95rem]">
+            {exercise.instructions}
+          </p>
         </div>
 
         {/* Progressive Hints System */}
@@ -333,7 +398,7 @@ export default function ExercisePage() {
                 ))}
               </div>
             )}
-            
+
             {hasMoreHints && (
               <button
                 onClick={handleShowNextHint}
@@ -397,7 +462,7 @@ export default function ExercisePage() {
             spellCheck={false}
             placeholder="// Skriv din kod här..."
           />
-          
+
           <div className="absolute top-6 right-8 flex items-center gap-3 z-10">
             {code.trim().length > 0 && (
               <button
@@ -409,7 +474,7 @@ export default function ExercisePage() {
                 Återställ
               </button>
             )}
-            
+
             <button
               onClick={handleRun}
               disabled={isRunning}
@@ -417,10 +482,16 @@ export default function ExercisePage() {
             >
               {isRunning ? (
                 <>
-                  <span className="animate-spin"><RefreshCcw size={16} /></span> Kör...
+                  <span className="animate-spin">
+                    <RefreshCcw size={16} />
+                  </span>
+                  <span className="ml-2">Kör...</span>
                 </>
               ) : (
-                "Kör ▶"
+                <>
+                  <Play size={14} />
+                  <span className="ml-1">Kör</span>
+                </>
               )}
             </button>
           </div>
@@ -433,12 +504,10 @@ export default function ExercisePage() {
               Output
             </h3>
           </div>
-          
+
           <div className="flex-1 overflow-y-auto p-0 relative">
-            {error && (
-              <ErrorDisplay error={error} />
-            )}
-            
+            {error && <ErrorDisplay error={error} />}
+
             {output && (
               <div className="p-6 h-full font-mono text-sm">
                 <pre
@@ -450,7 +519,7 @@ export default function ExercisePage() {
                 >
                   {output}
                 </pre>
-                
+
                 {isCorrect && (
                   <div className="mt-4 space-y-4">
                     <div className="p-4 bg-emerald-500/10 border border-emerald-500 rounded-lg flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -469,7 +538,9 @@ export default function ExercisePage() {
 
                     {nextExercise && (
                       <button
-                        onClick={isLastInLesson ? handleNextLesson : handleNextExercise}
+                        onClick={
+                          isLastInLesson ? handleNextLesson : handleNextExercise
+                        }
                         className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 shadow-lg shadow-emerald-900/30 animate-in fade-in slide-in-from-bottom-3 duration-300 delay-150"
                       >
                         {isLastInLesson ? "Nästa lektion" : "Nästa uppgift"}
@@ -482,8 +553,9 @@ export default function ExercisePage() {
             )}
 
             {!error && !output && (
-              <div className="h-full flex items-center justify-center text-slate-600 italic">
-                <p>Kör koden för att se resultat...</p>
+              <div className="h-full flex items-center justify-center text-slate-600 italic flex-col gap-2">
+                <Code2 size={36} className="text-slate-500/80" />
+                <p className="text-center">Kör koden för att se resultat...</p>
               </div>
             )}
           </div>
@@ -498,7 +570,8 @@ export default function ExercisePage() {
               Återställ kod?
             </h3>
             <p className="text-slate-400 mb-6">
-              Detta tar bort all din kod och historik för denna övning. Du kan inte ångra detta.
+              Detta tar bort all din kod och historik för denna övning. Du kan
+              inte ångra detta.
             </p>
             <div className="flex gap-3">
               <button
