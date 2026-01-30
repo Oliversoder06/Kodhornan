@@ -1,6 +1,7 @@
 "use client";
 
 import { ExerciseBoard } from "../components/ExerciseBoard";
+import { ConceptProgress } from "../components/ConceptProgress";
 import { useAuth } from "../context/AuthContext";
 
 export default function Home() {
@@ -45,8 +46,14 @@ export default function Home() {
           Lär dig programmera C# steg för steg
         </p>
       </header>
-
-      <ExerciseBoard />
+      <div className="flex gap-8">
+        <div className="flex-1">
+          <ExerciseBoard />
+        </div>
+        <aside className="w-72 flex-shrink-0">
+          <ConceptProgress />
+        </aside>
+      </div>
     </div>
   );
 }

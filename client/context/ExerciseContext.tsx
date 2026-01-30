@@ -22,6 +22,11 @@ interface ExerciseContextType {
   getExercise: (id: string) => Exercise | undefined;
   markComplete: (exerciseId: string) => Promise<void>;
   isCompleted: (exerciseId: string) => boolean;
+  // Navigation helpers
+  getNextExercise: (currentId: string) => Exercise | null;
+  getNextLesson: (currentLesson: number) => number | null;
+  isLastExerciseInLesson: (exerciseId: string) => boolean;
+  getLessonExercises: (lesson: number) => Exercise[];
 }
 
 const ExerciseContext = createContext<ExerciseContextType | undefined>(
@@ -113,6 +118,49 @@ export function ExerciseProvider({ children }: { children: ReactNode }) {
     return completedExercises.includes(exerciseId);
   };
 
+  // Navigation helpers
+  const getLessonExercises = (lesson: number): Exercise[] => {
+    return coreExercises
+      .filter((ex) => ex.lesson === lesson)
+      .sort((a, b) => {
+        // Sort by difficulty: lätt < medel < svår
+        const diffOrder = { lätt: 0, medel: 1, svår: 2 };
+        return diffOrder[a.difficulty] - diffOrder[b.difficulty];
+      });
+  };
+
+  const getNextExercise = (currentId: string): Exercise | null => {
+    const current = getExercise(currentId);
+    if (!current) return null;
+
+    const lessonExercises = getLessonExercises(current.lesson);
+    const currentIndex = lessonExercises.findIndex((ex) => ex.id === currentId);
+    
+    if (currentIndex === -1) return null;
+    if (currentIndex < lessonExercises.length - 1) {
+      return lessonExercises[currentIndex + 1];
+    }
+    
+    // Current is last in lesson, get first from next lesson
+    const nextLessonExercises = getLessonExercises(current.lesson + 1);
+    return nextLessonExercises.length > 0 ? nextLessonExercises[0] : null;
+  };
+
+  const getNextLesson = (currentLesson: number): number | null => {
+    const lessons = [...new Set(coreExercises.map((ex) => ex.lesson))].sort((a, b) => a - b);
+    const currentIndex = lessons.indexOf(currentLesson);
+    if (currentIndex === -1 || currentIndex === lessons.length - 1) return null;
+    return lessons[currentIndex + 1];
+  };
+
+  const isLastExerciseInLesson = (exerciseId: string): boolean => {
+    const exercise = getExercise(exerciseId);
+    if (!exercise) return false;
+    
+    const lessonExercises = getLessonExercises(exercise.lesson);
+    return lessonExercises[lessonExercises.length - 1]?.id === exerciseId;
+  };
+
   return (
     <ExerciseContext.Provider
       value={{
@@ -125,6 +173,10 @@ export function ExerciseProvider({ children }: { children: ReactNode }) {
         getExercise,
         markComplete,
         isCompleted,
+        getNextExercise,
+        getNextLesson,
+        isLastExerciseInLesson,
+        getLessonExercises,
       }}
     >
       {children}

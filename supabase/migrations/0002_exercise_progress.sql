@@ -22,3 +22,9 @@ create policy "Users can insert their own progress"
 on exercise_progress
 for insert
 with check (auth.uid() = user_id);
+
+-- Policy: Users can update their own progress
+create policy "Users can update their own progress"
+on exercise_progress
+for update
+using (auth.uid() = user_id);

@@ -5,9 +5,13 @@ export const exercise: Exercise = {
   lesson: 3,
   difficulty: "lätt",
   instructions:
-    "Lägg ihop 5 och 3, spara i en variabel och skriv ut resultatet.",
-  starterCode: "int summa = 5  3;\nConsole.WriteLine(summa);",
+    "Spelaren har 5 coins och hittar 3 till. Lägg ihop dem och skriv ut totalen.",
+  starterCode: "int totalCoins = 5  3;\nConsole.WriteLine(totalCoins);",
   expectedOutput: "8",
-  hint: "Använd + för att addera",
+  hints: [
+    "Använd + för att addera",
+    "5 + 3 = ?",
+    "int totalCoins = 5 + 3;"
+  ],
   tag: "Matematik",
 };
