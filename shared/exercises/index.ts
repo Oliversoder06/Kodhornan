@@ -1,2 +1,2 @@
-export * as core from "./core";
-export * as generated from "./generated";
+export * as core from "./core/index";
+export * as generated from "./generated/index";

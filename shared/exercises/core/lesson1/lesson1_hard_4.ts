@@ -1,8 +1,8 @@
-import { Exercise } from "../../exercise.schema";
+import type { Exercise } from "../../../exercise.schema";
 
 export const exercise: Exercise = {
-  id: "l4-svar-1",
-  lesson: 4,
+  id: "l1-svar-4",
+  lesson: 1,
   difficulty: "svår",
   instructions: "Addera två int-variabler i utskriften.",
   starterCode: `int a = 5;

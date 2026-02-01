@@ -11,6 +11,7 @@ import { Exercise } from "shared/exercise.schema";
 import { coreExercises, generatedTemplates } from "../lib/exercises";
 import { getCompletedExercises, markExerciseComplete } from "../lib/progress";
 import { supabase } from "../lib/supabase";
+import { sortExercisesForDisplay } from "../lib/exercise-sorting";
 
 interface ExerciseContextType {
   coreExercises: Exercise[];
@@ -141,13 +142,8 @@ export function ExerciseProvider({
 
   // Navigation helpers
   const getLessonExercises = (lesson: number): Exercise[] => {
-    return coreExercises
-      .filter((ex) => ex.lesson === lesson)
-      .sort((a, b) => {
-        // Sort by difficulty: lätt < medel < svår
-        const diffOrder = { lätt: 0, medel: 1, svår: 2 };
-        return diffOrder[a.difficulty] - diffOrder[b.difficulty];
-      });
+    const lessonExercises = coreExercises.filter((ex) => ex.lesson === lesson);
+    return sortExercisesForDisplay(lessonExercises);
   };
 
   const getNextExercise = (currentId: string): Exercise | null => {

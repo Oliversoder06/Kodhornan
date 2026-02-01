@@ -1,1 +1,15 @@
-export { exercise as lesson1_easy_1 } from "./lesson1_easy_1";
+export { exercise as lesson1_easy_1 } from "./lesson1/lesson1_easy_1";
+export { exercise as lesson1_easy_2 } from "./lesson1/lesson1_easy_2";
+export { exercise as lesson1_easy_3 } from "./lesson1/lesson1_easy_3";
+export { exercise as lesson1_easy_4 } from "./lesson1/lesson1_easy_4";
+export { exercise as lesson1_easy_5 } from "./lesson1/lesson1_easy_5";
+export { exercise as lesson1_hard_1 } from "./lesson1/lesson1_hard_1";
+export { exercise as lesson1_hard_2 } from "./lesson1/lesson1_hard_2";
+export { exercise as lesson1_hard_3 } from "./lesson1/lesson1_hard_3";
+export { exercise as lesson1_hard_4 } from "./lesson1/lesson1_hard_4";
+export { exercise as lesson1_hard_5 } from "./lesson1/lesson1_hard_5";
+export { exercise as lesson1_medium_1 } from "./lesson1/lesson1_medium_1";
+export { exercise as lesson1_medium_2 } from "./lesson1/lesson1_medium_2";
+export { exercise as lesson1_medium_3 } from "./lesson1/lesson1_medium_3";
+export { exercise as lesson1_medium_4 } from "./lesson1/lesson1_medium_4";
+export { exercise as lesson1_medium_5 } from "./lesson1/lesson1_medium_5";

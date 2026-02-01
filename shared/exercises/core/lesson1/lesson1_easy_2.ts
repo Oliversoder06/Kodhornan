@@ -1,8 +1,8 @@
-import { Exercise } from "../../exercise.schema";
+import type { Exercise } from "../../../exercise.schema";
 
 export const exercise: Exercise = {
-  id: "l2-latt-1",
-  lesson: 2,
+  id: "l1-latt-2",
+  lesson: 1,
   difficulty: "lätt",
   instructions: "Rätta ordningen! Programmet ska skriva 1, sen 2.",
   starterCode: `Console.WriteLine("2");

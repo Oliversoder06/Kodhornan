@@ -1,10 +1,10 @@
-import { Exercise } from "../../exercise.schema";
+import type { Exercise } from "../../../exercise.schema";
 
 export const exercise: Exercise = {
-  id: "l3-latt-1",
-  lesson: 3,
+  id: "l1-latt-3",
+  lesson: 1,
   difficulty: "lätt",
-  instructions: "Skapa en variabel för namnet \"Mario\".",
+  instructions: 'Skapa en variabel för namnet "Mario".',
   starterCode: `string name = ___;
 Console.WriteLine(name);`,
   expectedOutput: `Mario`,

@@ -1,8 +1,8 @@
-import { Exercise } from "../../exercise.schema";
+import type { Exercise } from "../../../exercise.schema";
 
 export const exercise: Exercise = {
-  id: "l3-medel-1",
-  lesson: 3,
+  id: "l1-medel-3",
+  lesson: 1,
   difficulty: "medel",
   instructions: "Skapa två variabler: hero och enemy.",
   starterCode: `string hero = "Link";

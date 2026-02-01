@@ -29,6 +29,7 @@ import {
   AlertCircle,
   Code2,
   Puzzle,
+  Loader2,
 } from "lucide-react";
 import {
   trackAttempt,
@@ -68,6 +69,7 @@ export default function ExercisePage() {
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Time tracking refs
+  // eslint-disable-next-line react-hooks/purity
   const startTimeRef = useRef<number>(Date.now());
   const lastSavedTimeRef = useRef<number>(0);
 
@@ -267,6 +269,7 @@ export default function ExercisePage() {
       // Track final time spent on success
       if (userId) {
         const timeSpent = Math.floor(
+          // eslint-disable-next-line react-hooks/purity
           (Date.now() - startTimeRef.current) / 1000,
         );
         trackTimeSpent(userId, exerciseId, timeSpent);
@@ -434,7 +437,7 @@ export default function ExercisePage() {
                 </pre>
                 <button
                   onClick={handleUseStarterCode}
-                  className="w-full py-2 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-md border border-slate-700 transition-colors"
+                  className="w-full py-2 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-md border border-slate-700 transition-colors cursor-pointer"
                 >
                   Använd startkod
                 </button>
@@ -506,6 +509,24 @@ export default function ExercisePage() {
           </div>
 
           <div className="flex-1 overflow-y-auto p-0 relative">
+            {isRunning && (
+              <div className="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center z-20 animate-in fade-in duration-200">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-emerald-500/20 rounded-full blur-xl animate-pulse"></div>
+                  <Loader2
+                    size={64}
+                    className="text-emerald-500 animate-spin relative"
+                  />
+                </div>
+                <p className="mt-4 text-xl font-bold text-emerald-400 animate-pulse">
+                  Kör kod...
+                </p>
+                <p className="mt-2 text-slate-500 text-sm">
+                  Vänta ett ögonblick
+                </p>
+              </div>
+            )}
+
             {error && <ErrorDisplay error={error} />}
 
             {output && (
