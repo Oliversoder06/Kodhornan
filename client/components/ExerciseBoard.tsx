@@ -1,7 +1,7 @@
 'use client';
 
 import { useExerciseContext } from "../context/ExerciseContext";
-import { GenerateLessonButton } from "./GenerateLessonButton";
+// import { GenerateLessonButton } from "./GenerateLessonButton";
 import { LessonCard } from "./LessonCard";
 import { Exercise } from "shared/exercise.schema";
 
@@ -36,7 +36,7 @@ export function ExerciseBoard() {
             {day.exercises.map((exercise) => (
               <LessonCard key={exercise.id} exercise={exercise} />
             ))}
-            {!readOnly && <GenerateLessonButton day={day.day} />}
+            {/* {!readOnly && <GenerateLessonButton day={day.day} />} */}
           </div>
         </div>
       ))}

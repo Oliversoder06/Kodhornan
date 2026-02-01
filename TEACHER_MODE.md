@@ -24,28 +24,22 @@ This will show the analytics panel in the bottom-right corner with:
 
 If you want to restrict Teacher Mode to specific users, here are two approaches:
 
-### Option 1: Add a `is_teacher` field to profiles
+### Option 1: Use Supabase user metadata
 
-1. **Update profiles table**:
-```sql
--- Add to supabase/migrations/0005_teacher_role.sql
-alter table profiles add column is_teacher boolean default false;
-```
+1. **Set user metadata**:
+   - Go to Authentication -> Users
+   - Edit user -> Metadata
+   - Add `{"is_teacher": true}`
 
-2. **Update TeacherMode component** to check the role:
+2. **Update TeacherMode component** to check the metadata:
 ```tsx
 const [isTeacher, setIsTeacher] = useState(false);
 
 useEffect(() => {
   async function checkTeacherRole() {
     const { data: { session } } = await supabase.auth.getSession();
-    if (session?.user) {
-      const { data } = await supabase
-        .from('profiles')
-        .select('is_teacher')
-        .eq('id', session.user.id)
-        .single();
-      setIsTeacher(data?.is_teacher || false);
+    if (session?.user?.user_metadata?.is_teacher) {
+      setIsTeacher(true);
     }
   }
   checkTeacherRole();
@@ -54,11 +48,6 @@ useEffect(() => {
 // Then in the component:
 if (!isTeacher) return null;
 ```
-
-3. **Manually set teachers** in Supabase dashboard:
-   - Go to Table Editor → profiles
-   - Find the user
-   - Set `is_teacher = true`
 
 ### Option 2: Use email whitelist
 
