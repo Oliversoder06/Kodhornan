@@ -28,27 +28,27 @@ function groupExercisesByLessonAndTag(exercises: Exercise[]): LessonGroup[] {
 
   // 2. For each lesson, group by Tag and Sort
   const lessonGroups: LessonGroup[] = [];
-  
+
   lessonMap.forEach((lessonExercises, lesson) => {
     // Sort all exercises in this lesson using the shared logic first
     const sortedExercises = sortExercisesForDisplay(lessonExercises);
-    
+
     // Now group them by tag, preserving the sorted order
     const tagMap = new Map<string, Exercise[]>();
-    
+
     // Since sortedExercises is already sorted by Tag -> Difficulty,
     // iterating through it will process tags in the correct order naturally.
     sortedExercises.forEach((ex) => {
-        const tag = ex.tag || "Övrigt";
-        if (!tagMap.has(tag)) {
-            tagMap.set(tag, []);
-        }
-        tagMap.get(tag)!.push(ex);
+      const tag = ex.tag || "Övrigt";
+      if (!tagMap.has(tag)) {
+        tagMap.set(tag, []);
+      }
+      tagMap.get(tag)!.push(ex);
     });
 
     const tagGroups: TagGroup[] = [];
     tagMap.forEach((groupExercises, tag) => {
-        tagGroups.push({ tag, exercises: groupExercises });
+      tagGroups.push({ tag, exercises: groupExercises });
     });
 
     lessonGroups.push({ lesson, tagGroups });
@@ -58,7 +58,30 @@ function groupExercisesByLessonAndTag(exercises: Exercise[]): LessonGroup[] {
 }
 
 export function ExerciseBoard() {
-  const { allExercises, readOnly } = useExerciseContext();
+  const { allExercises, isLoading } = useExerciseContext();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-slate-400">Laddar övningar...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (allExercises.length === 0) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-slate-400 mb-4">Inga övningar tillgängliga.</p>
+        <p className="text-sm text-slate-500">
+          Kontakta din lärare om du tror att detta är ett fel.
+        </p>
+      </div>
+    );
+  }
+
   const lessonGroups = groupExercisesByLessonAndTag(allExercises);
 
   return (
