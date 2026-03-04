@@ -13,3 +13,14 @@ export { exercise as lesson1_medium_2 } from "./lesson1/lesson1_medium_2";
 export { exercise as lesson1_medium_3 } from "./lesson1/lesson1_medium_3";
 export { exercise as lesson1_medium_4 } from "./lesson1/lesson1_medium_4";
 export { exercise as lesson1_medium_5 } from "./lesson1/lesson1_medium_5";
+
+// Lesson 3 – Jämförelser (if-satser)
+export { exercise as lesson3_easy_1 } from "./lesson3/lesson3_easy_1";
+export { exercise as lesson3_easy_2 } from "./lesson3/lesson3_easy_2";
+export { exercise as lesson3_easy_3 } from "./lesson3/lesson3_easy_3";
+export { exercise as lesson3_medium_1 } from "./lesson3/lesson3_medium_1";
+export { exercise as lesson3_medium_2 } from "./lesson3/lesson3_medium_2";
+export { exercise as lesson3_medium_3 } from "./lesson3/lesson3_medium_3";
+export { exercise as lesson3_hard_1 } from "./lesson3/lesson3_hard_1";
+export { exercise as lesson3_hard_2 } from "./lesson3/lesson3_hard_2";
+export { exercise as lesson3_hard_3 } from "./lesson3/lesson3_hard_3";
